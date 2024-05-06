@@ -3,6 +3,7 @@ package rdb
 import (
 	"errors"
 	"os"
+	"fmt"
 
 	"github.com/jinzhu/gorm"
 	"github.com/x-color/vue-trello/model"
@@ -23,8 +24,10 @@ type DBManager struct {
 
 // NewDBManager generates new DB manager.
 func NewDBManager() (DBManager, error) {
+	fmt.Println("DB_PATH = " + os.Getenv("DB_PATH"))
 	db, err := gorm.Open("sqlite3", os.Getenv("DB_PATH"))
 	if err != nil {
+		fmt.Println(err)
 		return DBManager{}, errors.New("failed to connect database")
 	}
 
