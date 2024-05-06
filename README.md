@@ -28,7 +28,5 @@ $ docker tag sea5kg/loza-server:latest sea5kg/loza-server:v1.0.0
 
 Run docker:
 ```
-$ docker run --rm -v `pwd`/docker_db:/root/db/ sea5kg/loza-server:latest
+$ docker run --rm -v `pwd`/server_data:/data sea5kg/loza-server:latest
 ```
-
-docker run --rm sea5kg/loza-server:latest
