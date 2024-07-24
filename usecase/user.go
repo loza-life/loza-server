@@ -40,18 +40,18 @@ func (i *UserInteractor) SignUp(user model.User) (model.User, error) {
 	tx := i.txRepo.BeginTransaction(false)
 
 	u, err := i.userRepo.Find(tx, map[string]interface{}{
-		"Name": user.Name,
+		"Email": user.Email,
 	})
 	if err != nil && !errors.Is(err, model.NotFoundError{}) {
 		logError(i.logger, err)
 		return model.User{}, err
 	}
-	if user.Name == u.Name {
-		i.logger.Info(formatLogMsg(user.ID, "New user name conflicts. '"+user.Name+"' already exists"))
+	if user.Email == u.Email {
+		i.logger.Info(formatLogMsg(user.ID, "New user name conflicts. '"+user.Email+"' already exists"))
 		return model.User{}, model.ConflictError{
 			UserID: "(No-ID)",
 			Err:    nil,
-			ID:     user.Name,
+			ID:     user.Email,
 			Act:    "validate name",
 		}
 	}
@@ -63,7 +63,7 @@ func (i *UserInteractor) SignUp(user model.User) (model.User, error) {
 		return model.User{}, model.InvalidContentError{
 			UserID: "(No-ID)",
 			Err:    err,
-			ID:     user.Name,
+			ID:     user.Email,
 			Act:    "hash password",
 		}
 	}
@@ -80,7 +80,7 @@ func (i *UserInteractor) SignUp(user model.User) (model.User, error) {
 func (i *UserInteractor) SignIn(user model.User) (model.User, error) {
 	tx := i.txRepo.BeginTransaction(false)
 	u, err := i.userRepo.Find(tx, map[string]interface{}{
-		"Name": user.Name,
+		"Email": user.Email,
 	})
 	if err != nil {
 		logError(i.logger, err)

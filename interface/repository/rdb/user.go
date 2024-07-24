@@ -10,9 +10,10 @@ import (
 
 // User is User data model for DB.
 type User struct {
-	ID   string `gorm:"primary_key"`
-	Name string
-	// Password is raw. It should be hash.
+	ID        string `gorm:"primary_key"`
+	Email     string
+	FirstName string
+	LastName  string
 	Password  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -21,15 +22,17 @@ type User struct {
 
 func (u *User) convertFrom(user model.User) {
 	u.ID = user.ID
-	u.Name = user.Name
+	u.Email = user.Email
 	u.Password = user.Password
 }
 
 func (u *User) convertTo() model.User {
 	user := model.User{
-		ID:       u.ID,
-		Name:     u.Name,
-		Password: u.Password,
+		ID:        u.ID,
+		Email:     u.Email,
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
+		Password:  u.Password,
 	}
 	return user
 }
@@ -83,8 +86,8 @@ func queryForUser(data map[string]interface{}) map[string]interface{} {
 	if v, ok := data["ID"]; ok {
 		query["id"] = v
 	}
-	if v, ok := data["Name"]; ok {
-		query["name"] = v
+	if v, ok := data["Email"]; ok {
+		query["email"] = v
 	}
 	if v, ok := data["Password"]; ok {
 		query["password"] = v

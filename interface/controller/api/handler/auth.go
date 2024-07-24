@@ -11,26 +11,32 @@ import (
 	"github.com/x-color/vue-trello/usecase"
 )
 
-//SECRET uses to encode token for JWT.
+// SECRET uses to encode token for JWT.
 var SECRET = []byte("secret")
 
 // User includes request data for authentication.
 type User struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
+	Email     string `json:"email"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Password  string `json:"password"`
 }
 
 func (u *User) convertTo() model.User {
 	user := model.User{
-		Name:     u.Name,
-		Password: u.Password,
+		Email:     u.Email,
+		FirstName: u.FirstName,
+		LastName:  u.LastName,
+		Password:  u.Password,
 	}
 
 	return user
 }
 
 func (u *User) convertFrom(user model.User) {
-	u.Name = user.Name
+	u.Email = user.Email
+	u.FirstName = user.FirstName
+	u.LastName = user.LastName
 	u.Password = ""
 }
 
@@ -53,7 +59,7 @@ func (h *UserHandler) SignUp(c echo.Context) error {
 		return err
 	}
 
-	if user.Name == "" || user.Password == "" {
+	if user.Email == "" || user.Password == "" {
 		return echo.ErrBadRequest
 	}
 
