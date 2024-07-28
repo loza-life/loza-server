@@ -59,11 +59,13 @@ func NewRouter(b InteraBox) *echo.Echo {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 
 	e.Static("/", "web/dist")
 	e.File("/", "web/dist/index.html")
 
 	auth := e.Group("/auth")
+	// auth.OPTIONS("POST", "GET")
 	auth.POST("/signup", userHandler.SignUp)
 	auth.POST("/signin", userHandler.SignIn)
 	auth.GET("/signout", userHandler.SignOut)
